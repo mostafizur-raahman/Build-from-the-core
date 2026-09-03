@@ -1,49 +1,46 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
-func makeAccumulator() func(n int) int {
-	total := 0
-	return func(n int) int {
-		total += n
-		return total
-	}
+type Shape interface {
+	Area() float64
 }
 
-func timed(name string, fn func()) {
-	start := time.Now()
-	defer func() {
-		elapsed := time.Since(start)
-		fmt.Printf("%s took %v\n", name, elapsed)
-	}()
-
-	fn()
+type Rectangle struct {
+	height, width float64
 }
 
-func timed2(name string, fn func()) {
-	start := time.Now()
+type Cricle struct {
+	redius float64
+}
 
-	fn()
-	elapsed := time.Since(start)
-	fmt.Printf("%s took %v\n", name, elapsed)
+func (r Rectangle) Area() float64 {
+	return 2 * r.height * r.height
+}
 
+func (c Cricle) Area() float64 {
+	return 2 * 3.1415 * c.redius
+}
+
+func (c Cricle) Area2() float64 {
+	return 2 * 3.1415 * c.redius
+}
+
+func CalcuteArea(s Shape) float64 {
+	return s.Area()
 }
 
 func main() {
-	acc := makeAccumulator()
-	fmt.Println(acc(5))
-	fmt.Println(acc(10))
-	fmt.Println(acc(3))
-
-	// timed("Test 1: ", func() {
-	// 	time.Sleep(100 * time.Millisecond)
-	// })
-	timed("panicking operation", func() {
-		time.Sleep(50 * time.Millisecond)
-		panic("oh no!")
-	})
+	rec := Rectangle{
+		height: 10.0,
+		width:  2.0,
+	}
+	cir := Cricle{
+		redius: 5,
+	}
+	fmt.Println(cir.Area2())
+	fmt.Println("okkkkkkkkkk")
+	fmt.Println(CalcuteArea(rec))
+	fmt.Println(CalcuteArea(cir))
 
 }

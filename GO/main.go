@@ -1,46 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"log"
+	"net"
+)
 
-type Shape interface {
-	Area() float64
-}
-
-type Rectangle struct {
-	height, width float64
-}
-
-type Cricle struct {
-	redius float64
-}
-
-func (r Rectangle) Area() float64 {
-	return 2 * r.height * r.height
-}
-
-func (c Cricle) Area() float64 {
-	return 2 * 3.1415 * c.redius
-}
-
-func (c Cricle) Area2() float64 {
-	return 2 * 3.1415 * c.redius
-}
-
-func CalcuteArea(s Shape) float64 {
-	return s.Area()
-}
+var count = 0
 
 func main() {
-	rec := Rectangle{
-		height: 10.0,
-		width:  2.0,
+	ln, err := net.Listen("tcp", ":9000")
+	if err != nil {
+		log.Fatal(err)
 	}
-	cir := Cricle{
-		redius: 5,
+	defer ln.Close()
+
+	for {
+		conn, err := ln.Accept()
+		if err != nil {
+			log.Println("accept error", err)
+			continue
+		}
+		count++
+		fmt.Println("paisi ", count)
+		_, _ = io.Copy(conn, conn)
+		conn.Close()
 	}
-	fmt.Println(cir.Area2())
-	fmt.Println("okkkkkkkkkk")
-	fmt.Println(CalcuteArea(rec))
-	fmt.Println(CalcuteArea(cir))
 
 }

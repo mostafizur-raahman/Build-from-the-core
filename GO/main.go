@@ -2,30 +2,36 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"log"
-	"net"
+	"math/rand"
+	"time"
 )
 
-var count = 0
+func worker(id int) {
+	duration := time.Duration(100+rand.Intn(400)) * time.Millisecond
+	time.Sleep(duration)
+	fmt.Printf("worker %d slept for %v\n", id, duration)
+}
 
 func main() {
-	ln, err := net.Listen("tcp", ":9000")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer ln.Close()
+	ch := make(chan struct{})
+	bh := make(chan struct{})
+	go func() {
+		fmt.Println("working....")
+		time.Sleep(time.Second)
+		fmt.Println("done!")
+		ch <- struct{}{}
+	}()
 
-	for {
-		conn, err := ln.Accept()
-		if err != nil {
-			log.Println("accept error", err)
-			continue
-		}
-		count++
-		fmt.Println("paisi ", count)
-		_, _ = io.Copy(conn, conn)
-		conn.Close()
-	}
+	go func() {
+		fmt.Println("working1....")
+		time.Sleep(time.Second)
+		fmt.Println("done1!")
+		bh <- struct{}{}
+	}()
 
+	res := <-ch // block untill received
+	fmt.Println("now ch is unblock ", res)
+	res2 := <-bh
+	fmt.Println("now bh is unblock ", res2)
+	fmt.Println("All !done")
 }

@@ -43,10 +43,11 @@ func square(in <-chan int) <-chan int {
 }
 
 func main() {
-	nums := generate(1, 2, 3, 4)
-	squares := square(nums)
+	// nums := generate(1, 2, 3, 4)
+	// squares := square(nums)
 
-	for n := range squares {
-		fmt.Println("MAIN: printing", n)
-	}
+	// for n := range squares {
+	// 	fmt.Println("MAIN: printing", n)
+	// }
+	Test()
 }

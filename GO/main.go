@@ -1,37 +1,35 @@
 package main
 
-import (
-	"fmt"
-	"math/rand"
-	"time"
-)
+import "fmt"
 
-func worker(id int) {
-	duration := time.Duration(100+rand.Intn(400)) * time.Millisecond
-	time.Sleep(duration)
-	fmt.Printf("worker %d slept for %v\n", id, duration)
+func generate(nums ...int) <-chan int {
+	out := make(chan int)
+
+	go func() {
+		defer close(out)
+		for _, n := range nums {
+			out <- n
+		}
+	}()
+
+	return out
 }
 
+func square(in <-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		defer close(out)
+		for n := range in {
+			out <- n * n
+		}
+	}()
+	return out
+}
 func main() {
-	ch := make(chan struct{})
-	bh := make(chan struct{})
-	go func() {
-		fmt.Println("working....")
-		time.Sleep(time.Second)
-		fmt.Println("done!")
-		ch <- struct{}{}
-	}()
+	nums := generate(1, 2, 3, 4)
+	squares := square(nums)
 
-	go func() {
-		fmt.Println("working1....")
-		time.Sleep(time.Second)
-		fmt.Println("done1!")
-		bh <- struct{}{}
-	}()
-
-	res := <-ch // block untill received
-	fmt.Println("now ch is unblock ", res)
-	res2 := <-bh
-	fmt.Println("now bh is unblock ", res2)
-	fmt.Println("All !done")
+	for n := range squares {
+		fmt.Println(n)
+	}
 }

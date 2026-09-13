@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"hello/concurrency"
 	"time"
 )
 
@@ -49,5 +50,6 @@ func main() {
 	// for n := range squares {
 	// 	fmt.Println("MAIN: printing", n)
 	// }
-	Test()
+	// Test()
+	concurrency.Concurrent()
 }

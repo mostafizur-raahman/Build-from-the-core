@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func generate(nums ...int) <-chan int {
+func generate1(nums ...int) <-chan int {
 	out := make(chan int)
 
 	go func() {
@@ -22,7 +22,7 @@ func generate(nums ...int) <-chan int {
 	return out
 }
 
-func square(in <-chan int) <-chan int {
+func square1(in <-chan int) <-chan int {
 	out := make(chan int)
 
 	go func() {

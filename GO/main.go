@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"hello/concurrency"
+	"hello/clouser"
 	"time"
 )
 
@@ -51,5 +51,6 @@ func main() {
 	// 	fmt.Println("MAIN: printing", n)
 	// }
 	// Test()
-	concurrency.Concurrent()
+	// concurrency.Concurrent()
+	clouser.GiftSomething()
 }

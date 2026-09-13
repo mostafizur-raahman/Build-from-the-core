@@ -42,7 +42,7 @@ func square(in <-chan int) <-chan int {
 	return out
 }
 
-func main() {
+func pileline() {
 	nums := generate(1, 2, 3, 4)
 	squares := square(nums)
 

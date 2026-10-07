@@ -57,6 +57,12 @@ func (q *Que) pop() {
 	}
 
 }
+func (q *Que) size() int {
+	return q.currentSize
+}
+func (q *Que) isEmpty() bool {
+	return q.currentSize == 0
+}
 func main() {
 	queue := NewQueue(4)
 	queue.push(1)
